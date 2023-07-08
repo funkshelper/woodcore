@@ -112,15 +112,15 @@ CPubKey CKey::GetPubKey() const {
 }
 
 bool CKey::Sign(const uint256 &hash, std::vector<unsigned char>& vchSig, bool lowS) const {
-    printf("looks like we in CKey::Sign three args\n");
+    //printf("looks like we in CKey::Sign three args\n");
     if (!fValid)
         return false;
 
-    printf("looks like we in CKey::Sign three args part 2\n");
+    //printf("looks like we in CKey::Sign three args part 2\n");
     CECKey key;
     key.SetSecretBytes(vch);
 
-    printf("looks like we in CKey::Sign three args part 3\n");
+    //printf("looks like we in CKey::Sign three args part 3\n");
     return key.Sign(hash, vchSig, lowS);
 }
 

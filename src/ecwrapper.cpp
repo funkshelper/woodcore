@@ -232,8 +232,8 @@ bool CECKey::Sign(const uint256 &hash, std::vector<unsigned char>& vchSig, bool 
 	r = BN_new();
 	s = BN_new();
 	ECDSA_SIG_get0(sig, &r, &s);
-    printf("stuff1 is %s \n",BN_bn2hex(s));
-    printf("stuff2 is %s \n",BN_bn2hex(r));
+    //printf("stuff1 is %s \n",BN_bn2hex(s));
+    //printf("stuff2 is %s \n",BN_bn2hex(r));
 
 	BIGNUM * s1;
     s1 = BN_new();

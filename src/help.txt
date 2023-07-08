@@ -1,0 +1,111 @@
+== Blockchain ==
+getbestblockhash
+getblock "hash" ( verbose )
+getblockchaininfo
+getblockcount
+getblockhash index
+getblockheader "hash" ( verbose )
+getchaintips
+getdifficulty
+getmempoolancestors txid (verbose)
+getmempooldescendants txid (verbose)
+getmempoolentry txid
+getmempoolinfo
+getrawmempool ( verbose )
+gettxout "txid" n ( includemempool )
+gettxoutproof ["txid",...] ( blockhash )
+gettxoutsetinfo
+verifychain ( checklevel numblocks )
+verifytxoutproof "proof"
+
+== Control ==
+getinfo
+help ( "command" )
+stop
+
+== Generating ==
+generate numblocks ( maxtries )
+generatetoaddress numblocks address (maxtries)
+
+== Mining ==
+getblocktemplate ( TemplateRequest )
+getmininginfo
+getnetworkhashps ( blocks height )
+getwork ( "data" )
+prioritisetransaction <txid> <priority delta> <fee delta>
+submitblock "hexdata" ( "jsonparametersobject" )
+
+== Network ==
+addnode "node" "add|remove|onetry"
+clearbanned
+disconnectnode "node" 
+getaddednodeinfo dummy ( "node" )
+getconnectioncount
+getnettotals
+getnetworkinfo
+getpeerinfo
+listbanned
+ping
+setban "ip(/netmask)" "add|remove" (bantime) (absolute)
+
+== Rawtransactions ==
+createrawtransaction [{"txid":"id","vout":n},...] {"address":amount,"data":"hex",...} ( locktime )
+decoderawtransaction "hexstring"
+decodescript "hex"
+fundrawtransaction "hexstring" ( options )
+getrawtransaction "txid" ( verbose )
+sendrawtransaction "hexstring" ( allowhighfees )
+signrawtransaction "hexstring" ( [{"txid":"id","vout":n,"scriptPubKey":"hex","redeemScript":"hex"},...] ["privatekey1",...] sighashtype )
+
+== Util ==
+createmultisig nrequired ["key",...]
+estimatefee nblocks
+estimatepriority nblocks
+estimatesmartfee nblocks
+estimatesmartpriority nblocks
+signmessagewithprivkey "privkey" "message"
+validateaddress "woodcoinaddress"
+verifymessage "woodcoinaddress" "signature" "message"
+
+== Wallet ==
+abandontransaction "txid"
+addmultisigaddress nrequired ["key",...] ( "account" )
+addwitnessaddress "address"
+backupwallet "destination"
+dumpprivkey "woodcoinaddress"
+dumpwallet "filename"
+encryptwallet "passphrase"
+getaccount "woodcoinaddress"
+getaccountaddress "account"
+getaddressesbyaccount "account"
+getbalance ( "account" minconf includeWatchonly )
+getnewaddress ( "account" )
+getrawchangeaddress
+getreceivedbyaccount "account" ( minconf )
+getreceivedbyaddress "woodcoinaddress" ( minconf )
+gettransaction "txid" ( includeWatchonly )
+getunconfirmedbalance
+getwalletinfo
+importaddress "address" ( "label" rescan p2sh )
+importprivkey "woodcoinprivkey" ( "label" rescan )
+importprunedfunds
+importpubkey "pubkey" ( "label" rescan )
+importwallet "filename"
+keypoolrefill ( newsize )
+listaccounts ( minconf includeWatchonly)
+listaddressgroupings
+listlockunspent
+listreceivedbyaccount ( minconf includeempty includeWatchonly)
+listreceivedbyaddress ( minconf includeempty includeWatchonly)
+listsinceblock ( "blockhash" target-confirmations includeWatchonly)
+listtransactions ( "account" count from includeWatchonly)
+listunspent ( minconf maxconf  ["address",...] )
+lockunspent unlock ([{"txid":"txid","vout":n},...])
+move "fromaccount" "toaccount" amount ( minconf "comment" )
+removeprunedfunds "txid"
+sendfrom "fromaccount" "towoodcoinaddress" amount ( minconf "comment" "comment-to" )
+sendmany "fromaccount" {"address":amount,...} ( minconf "comment" ["address",...] )
+sendtoaddress "woodcoinaddress" amount ( "comment" "comment-to" subtractfeefromamount )
+setaccount "woodcoinaddress" "account"
+settxfee amount
+signmessage "woodcoinaddress" "message"
