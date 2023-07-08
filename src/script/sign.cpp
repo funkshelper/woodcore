@@ -29,11 +29,12 @@ bool TransactionSignatureCreator::CreateSig(std::vector<unsigned char>& vchSig, 
     // Signing with uncompressed keys is disabled in witness scripts
     if (sigversion == SIGVERSION_WITNESS_V0 && !key.IsCompressed())
         return false;
-    printf("Inside TransactionSignatureCreator about to sign \n");
+    //printf("Inside TransactionSignatureCreator about to sign \n");
     uint256 hash = SignatureHash(scriptCode, *txTo, nIn, nHashType, amount, sigversion);
+    //printf("Hash created \n");
     if (!key.Sign(hash, vchSig))
         return false;
-    printf("Apparently signature succeeded \n");
+    //printf("Apparently signature succeeded \n");
     vchSig.push_back((unsigned char)nHashType);
     return true;
 }
@@ -41,10 +42,10 @@ bool TransactionSignatureCreator::CreateSig(std::vector<unsigned char>& vchSig, 
 static bool Sign1(const CKeyID& address, const BaseSignatureCreator& creator, const CScript& scriptCode, std::vector<valtype>& ret, SigVersion sigversion)
 {
     vector<unsigned char> vchSig;
-    printf("Inside Sign.cpp Sign1 \n");
+    //printf("Inside Sign.cpp Sign1 \n");
     if (!creator.CreateSig(vchSig, address, scriptCode, sigversion))
         return false;
-    printf("Sign.cpp Sign1 apparently succeeded \n");
+    //printf("Sign.cpp Sign1 apparently succeeded \n");
     ret.push_back(vchSig);
     return true;
 }
@@ -145,21 +146,20 @@ static CScript PushAll(const vector<valtype>& values)
 
 bool ProduceSignature(const BaseSignatureCreator& creator, const CScript& fromPubKey, SignatureData& sigdata)
 {
-    printf("inside ProduceSignature \n");
     CScript script = fromPubKey;
     bool solved = true;
     std::vector<valtype> result;
     txnouttype whichType;
     solved = SignStep(creator, script, result, whichType, SIGVERSION_BASE);
-    if (solved) printf("solved still true after SignStep.. \n" ); 
-    if (!solved) printf("solved not true now yo \n");
+    //if (solved) printf("solved still true after SignStep.. \n" ); 
+    //if (!solved) printf("solved not true now yo \n");
     bool P2SH = false;
     CScript subscript;
     sigdata.scriptWitness.stack.clear();
-    printf("looking through whichTypes \n");
+    //printf("looking through whichTypes \n");
     if (solved && whichType == TX_SCRIPTHASH)
     { 
-        printf("whichType==TX_SCRIPTHASH yo \n");
+        //printf("whichType==TX_SCRIPTHASH yo \n");
         // Solver returns the subscript that needs to be evaluated;
         // the final scriptSig is the signatures from that
         // and then the serialized subscript:
@@ -170,7 +170,7 @@ bool ProduceSignature(const BaseSignatureCreator& creator, const CScript& fromPu
 
     if (solved && whichType == TX_WITNESS_V0_KEYHASH)
     {
-        printf("whichType==TX_WITNESS_V0_KEYHASH yo \n");
+        //printf("whichType==TX_WITNESS_V0_KEYHASH yo \n");
         CScript witnessscript;
         witnessscript << OP_DUP << OP_HASH160 << ToByteVector(result[0]) << OP_EQUALVERIFY << OP_CHECKSIG;
         txnouttype subType;
@@ -180,7 +180,7 @@ bool ProduceSignature(const BaseSignatureCreator& creator, const CScript& fromPu
     }
     else if (solved && whichType == TX_WITNESS_V0_SCRIPTHASH)
     {
-        printf("whichType==TX_WITNESS_V0_SCRIPTHASH");
+        //printf("whichType==TX_WITNESS_V0_SCRIPTHASH");
         CScript witnessscript(result[0].begin(), result[0].end());
         txnouttype subType;
         solved = solved && SignStep(creator, witnessscript, result, subType, SIGVERSION_WITNESS_V0) && subType != TX_SCRIPTHASH && subType != TX_WITNESS_V0_SCRIPTHASH && subType != TX_WITNESS_V0_KEYHASH;
@@ -195,7 +195,7 @@ bool ProduceSignature(const BaseSignatureCreator& creator, const CScript& fromPu
     sigdata.scriptSig = PushAll(result);
 
     // Test solution
-    if (solved) printf("we have solved=true in sign.cpp produceSignature(  func \n ");
+    //if (solved) printf("we have solved=true in sign.cpp produceSignature(  func \n ");
     return solved;
     //return solved && VerifyScript(sigdata.scriptSig, fromPubKey, &sigdata.scriptWitness, STANDARD_SCRIPT_VERIFY_FLAGS, creator.Checker());
 }

@@ -212,36 +212,48 @@ bool CECKey::SetPubKey(const unsigned char* pubkey, size_t size) {
 
 bool CECKey::Sign(const uint256 &hash, std::vector<unsigned char>& vchSig, bool lowS) {
     vchSig.clear();
+
     ECDSA_SIG *sig = ECDSA_do_sign((unsigned char*)&hash, sizeof(hash), pkey);
+
     if (sig == NULL)
         return false;
     BN_CTX *ctx = BN_CTX_new();
+
     BN_CTX_start(ctx);
     const EC_GROUP *group = EC_KEY_get0_group(pkey);
     BIGNUM *order = BN_CTX_get(ctx);
     BIGNUM *halforder = BN_CTX_get(ctx);
     EC_GROUP_get_order(group, order, ctx);
     BN_rshift1(halforder, order);
+
 	
 	const BIGNUM *r;
 	const BIGNUM *s;
 	r = BN_new();
 	s = BN_new();
 	ECDSA_SIG_get0(sig, &r, &s);
+    printf("stuff1 is %s \n",BN_bn2hex(s));
+    printf("stuff2 is %s \n",BN_bn2hex(r));
 
 	BIGNUM * s1;
-	BN_copy(s1,s);
+    s1 = BN_new();
+	BN_copy(s1, s);
 
     if (lowS && BN_cmp(s, halforder) > 0) {
         // enforce low S values, by negating the value (modulo the order) if above order/2.
         BN_sub(s1, order, s1);
     }
     BN_CTX_end(ctx);
+
+    
     BN_CTX_free(ctx);
+
     unsigned int nSize = ECDSA_size(pkey);
     vchSig.resize(nSize); // Make sure it is big enough
     unsigned char *pos = &vchSig[0];
+
     nSize = i2d_ECDSA_SIG(sig, &pos);
+    
     ECDSA_SIG_free(sig);
     vchSig.resize(nSize); // Shrink to fit actual size
     return true;
@@ -305,6 +317,8 @@ bool CECKey::Recover(const uint256 &hash, const unsigned char *p64, int rec)
 	s = BN_new();
 	BIGNUM *r1;
 	BIGNUM *s1;
+    r1 = BN_new();
+    s1 = BN_new();
 	ECDSA_SIG_get0(sig, &r, &s);
 
     BN_bin2bn(&p64[0],  32, r1);

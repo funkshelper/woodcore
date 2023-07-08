@@ -112,10 +112,15 @@ CPubKey CKey::GetPubKey() const {
 }
 
 bool CKey::Sign(const uint256 &hash, std::vector<unsigned char>& vchSig, bool lowS) const {
+    printf("looks like we in CKey::Sign three args\n");
     if (!fValid)
         return false;
+
+    printf("looks like we in CKey::Sign three args part 2\n");
     CECKey key;
     key.SetSecretBytes(vch);
+
+    printf("looks like we in CKey::Sign three args part 3\n");
     return key.Sign(hash, vchSig, lowS);
 }
 
@@ -132,6 +137,30 @@ bool CKey::SignCompact(const uint256 &hash, std::vector<unsigned char>& vchSig) 
     vchSig[0] = 27 + rec + (fCompressed ? 4 : 0);
     return true;
 }
+
+/*
+bool CKey::Sign(const uint256 &hash, std::vector<unsigned char>& vchSig) const {
+    if (!fValid)
+        return false;
+    CECKey key;
+    key.SetSecretBytes(vch);
+    return key.Sign(hash, vchSig);
+}
+
+bool CKey::SignCompact(const uint256 &hash, std::vector<unsigned char>& vchSig) const {
+    if (!fValid)
+        return false;
+    CECKey key;
+    key.SetSecretBytes(vch);
+    vchSig.resize(65);
+    int rec = -1;
+    if (!key.SignCompact(hash, &vchSig[1], rec))
+        return false;
+    assert(rec != -1);
+    vchSig[0] = 27 + rec + (fCompressed ? 4 : 0);
+    return true;
+}
+*/
 
 bool CKey::Load(CPrivKey &privkey, CPubKey &vchPubKey, bool fSkipCheck=false) {
     CECKey key;

@@ -9,6 +9,7 @@
 #include <vector>
 
 #include <openssl/ec.h>
+#include <openssl/bn.h>
 
 class uint256;
 
