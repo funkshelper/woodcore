@@ -10,6 +10,7 @@
 #include <QTimer>
 
 #include <cmath>
+#include <QPainterPath>  // Add this line
 
 #define DESIRED_SAMPLES         800
 

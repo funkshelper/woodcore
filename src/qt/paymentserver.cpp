@@ -19,6 +19,8 @@
 
 #include <openssl/x509_vfy.h>
 
+
+
 #include <QApplication>
 #include <QByteArray>
 #include <QDataStream>
@@ -45,6 +47,7 @@
 #else
 #include <QUrlQuery>
 #endif
+
 
 const int BITCOIN_IPC_CONNECT_TIMEOUT = 1000; // milliseconds
 const QString BITCOIN_IPC_PREFIX("woodcoin:");
@@ -555,7 +558,9 @@ bool PaymentServer::processPaymentRequest(const PaymentRequestPlus& request, Sen
     QList<std::pair<CScript, CAmount> > sendingTos = request.getPayTo();
     QStringList addresses;
 
-    Q_FOREACH(const PAIRTYPE(CScript, CAmount)& sendingTo, sendingTos) {
+	
+    //Q_FOREACH(const PAIRTYPE(CScript, CAmount)& sendingTo, sendingTos) {
+    for (const PAIRTYPE(CScript, CAmount)& sendingTo : sendingTos) {
         // Extract and check destination addresses
         CTxDestination dest;
         if (ExtractDestination(sendingTo.first, dest)) {

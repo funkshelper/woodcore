@@ -27,6 +27,8 @@
 
 #include <boost/foreach.hpp>
 
+using namespace boost::placeholders;
+
 WalletModel::WalletModel(const PlatformStyle *platformStyle, CWallet *wallet, OptionsModel *optionsModel, QObject *parent) :
     QObject(parent), wallet(wallet), optionsModel(optionsModel), addressTableModel(0),
     transactionTableModel(0),

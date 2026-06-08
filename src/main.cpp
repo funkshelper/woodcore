@@ -91,7 +91,7 @@ FeeFilterRounder filterRounder(::minRelayTxFee);
 struct IteratorComparator
 {
     template<typename I>
-    bool operator()(const I& a, const I& b)
+    bool operator()(const I& a, const I& b) const
     {
         return &(*a) < &(*b);
     }
@@ -704,7 +704,7 @@ CBlockTreeDB *pblocktree = NULL;
 //
 
 bool AddOrphanTx(const CTransaction& tx, NodeId peer) EXCLUSIVE_LOCKS_REQUIRED(cs_main)
-{
+ {
     uint256 hash = tx.GetHash();
     if (mapOrphanTransactions.count(hash))
         return false;
@@ -725,6 +725,9 @@ bool AddOrphanTx(const CTransaction& tx, NodeId peer) EXCLUSIVE_LOCKS_REQUIRED(c
 
     auto ret = mapOrphanTransactions.emplace(hash, COrphanTx{tx, peer, GetTime() + ORPHAN_TX_EXPIRE_TIME});
     assert(ret.second);
+
+
+    LOCK(cs_main);
     BOOST_FOREACH(const CTxIn& txin, tx.vin) {
         mapOrphanTransactionsByPrev[txin.prevout].insert(ret.first);
     }
