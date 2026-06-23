@@ -9,7 +9,7 @@ Note
 Always use absolute paths to configure and compile woodcoin and the dependencies,
 for example, when specifying the path of the dependency:
 
-	../dist/configure --enable-cxx --disable-shared --with-pic --prefix=$BDB_PREFIX
+	./configure --enable-cxx --disable-shared --with-pic --prefix=$BDB_PREFIX
 
 Here BDB_PREFIX must be an absolute path - it is defined using $(pwd) which ensures
 the usage of the absolute path.
@@ -34,7 +34,7 @@ These dependencies are required:
  Library     | Purpose          | Description
  ------------|------------------|----------------------
  libssl      | Crypto           | Random Number Generation, Elliptic Curve Cryptography
- libboost    | Utility          | Library for threading, data structures, etc
+ libboost >= 1.65   | Utility          | Library for threading, data structures, etc
  libevent    | Networking       | OS independent asynchronous networking
 
 Optional dependencies:
@@ -69,11 +69,13 @@ Build requirements:
 
 Options when installing required Boost library files:
 
-1. On at least Ubuntu 14.04+ and Debian 7+ there are generic names for the
+Important note: a coding style used in Woodcore was removed in Version 1.66 of Boost. Therefore you must use 1.65 or earlier. 
+
+1. On at least Ubuntu 14-18 and Debian 7+ there are generic names for the
 individual boost development packages, so the following can be used to only
 install necessary parts of boost:
 
-        sudo apt-get install libboost-system-dev libboost-filesystem-dev libboost-chrono-dev libboost-program-options-dev libboost-test-dev libboost-thread-dev
+        sudo apt-get install libboost-system1.65-dev libboost-filesystem1.65-dev libboost-chrono1.65-dev libboost-program-options1.65-dev libboost-test1.65-dev libboost-thread1.65-dev
 
 2. If that doesn't work, you can install all boost development packages with:
 
